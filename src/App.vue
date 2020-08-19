@@ -11,13 +11,21 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 
 export default {
-  name: 'App',
-  components:{
+  name: "App",
+  components: {
     Header,
-    Footer
+    Footer,
   },
-}
+
+  mounted() {
+    this.getCategoryList();
+  },
+  methods: {
+    getCategoryList() {
+      this.$store.dispatch("getCategoryList");
+    },
+  },
+};
 </script>
 
-<style>
-</style>
+<style lang="less" scoped></style>

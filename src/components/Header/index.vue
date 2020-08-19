@@ -1,4 +1,5 @@
 <template>
+  <!-- 头部 -->
   <header class="header">
     <!-- 头部的第一行 -->
     <div class="top">
@@ -7,9 +8,9 @@
           <p>尚品汇欢迎您！</p>
           <p>
             <span>请</span>
-            <router-link to="/Login">登录</router-link>
+            <router-link to="/login">登录</router-link>
             <!-- <a href="###">登录</a> -->
-            <router-link to="/Register" class="register">免费注册</router-link>
+            <router-link to="/register" class="register">免费注册</router-link>
             <!-- <a href="###" class="register">免费注册</a> -->
           </p>
         </div>
@@ -28,14 +29,13 @@
     <!--头部第二行 搜索区域-->
     <div class="bottom">
       <h1 class="logoArea">
-
-        <router-link to="/Home" class="logo" title="尚品汇">
-        <img src="./images/logo.png" alt="" />
+        <router-link to="/home" class="logo" title="尚品汇">
+          <img src="./images/logo.png" alt />
         </router-link>
 
         <!-- <a class="logo" title="尚品汇" href="###" target="_blank">
           <img src="./images/logo.png" alt="" />
-        </a> -->
+        </a>-->
       </h1>
       <div class="searchArea">
         <form action="###" class="searchForm">
@@ -45,7 +45,11 @@
             class="input-error input-xxlarge"
             v-model="keyword"
           />
-          <button class="sui-btn btn-xlarge btn-danger" type="button" @click="toSearch">
+          <button
+            class="sui-btn btn-xlarge btn-danger"
+            type="button"
+            @click="toSearch"
+          >
             搜索
           </button>
         </form>
@@ -56,26 +60,43 @@
 
 <script>
 export default {
-  name: "Header",
   data() {
     return {
-      keyword:'',
-    }
+      keyword: "",
+    };
+  },
+  name: "Header",
+  mounted() {
+    //  接收search组件传来的
+    this.$bus.$on("clearKeyword",this.clearKeyword)
   },
   methods: {
-    toSearch(){
-      let Location = {
-        name:"search",
-        params:{
-          keyword:this.keyword || undefined
+    toSearch() {
+      let location = {
+        // path: "/search",
+        name: "search",
+        params: {
+          keyword: this.keyword || undefined,
         },
-        query:{
-          keyword:this.keyword.toUpperCase()
-        }
+        // query: {
+        //   keyword:this.keyword.toUpperCase()
+        // },
+      };
+      //  判断路由中是否有query参数
+      if (this.$route.query) {
+        location.query = this.$route.query
       }
-      this.$router.push(Location).catch(()=>{})
+
+      //  字符串形式
+      // this.$router.push("/search");
+      this.$router.push(location);
     },
+    //  清空搜索框的内容
+    clearKeyword(){
+      this.keyword = ""
+    }
   },
+
 };
 </script>
 
